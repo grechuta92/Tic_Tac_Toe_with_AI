@@ -1,3 +1,5 @@
+package tictactoe;
+
 import java.util.Scanner;
 
 public class PlayerOne implements Player {
@@ -12,20 +14,34 @@ public class PlayerOne implements Player {
 
     @Override
     public String move() {
-        System.out.print("Enter the coordinates: ");
-
-        setXTempPosition();
-        checkIsANumber(this.xTempPosition);
-        this.xPosition = Integer.parseInt(this.xTempPosition);
-        checkIsTheNumbersFromRange(xPosition );
-
-        setOTempPosition();
-        checkIsANumber(this.oTempPosition);
-        this.oPosition = Integer.parseInt(this.oTempPosition);
-        checkIsTheNumbersFromRange(xPosition );
+        System.out.println("Enter the coordinates: ");
+        setxPosition();
+        setoPosition();
 
         return getXPosition() + " " + getOPosition();
 
+    }
+
+    private void setxPosition() {
+        System.out.println("Set X Positon (1-3)");
+        setXTempPosition();
+
+        if ((checkIsANumber(this.xTempPosition) && checkIsTheNumbersFromRange(xTempPosition))) {
+            this.xPosition = Integer.parseInt(this.xTempPosition);
+        } else {
+            setxPosition();
+        }
+    }
+
+    private void setoPosition(){
+        System.out.println("Set O Position (1-3)");
+        setOTempPosition();
+
+        if ((checkIsANumber(this.oTempPosition) && checkIsTheNumbersFromRange(oTempPosition))) {
+            this.oPosition = Integer.parseInt(this.oTempPosition);
+        } else {
+            setoPosition();
+        }
     }
 
 
@@ -48,20 +64,24 @@ public class PlayerOne implements Player {
         this.oTempPosition = scanner.next();
     }
 
-    private void checkIsANumber(String tempValues) {
+    private boolean checkIsANumber(String tempValues) {
         if (tempValues.equals("exit")) {
             System.exit(0);
         } else if (!tempValues.matches("[0-9]")) {
             System.out.println("You should enter numbers!");
             move();
+            return false;
         }
+        return true;
     }
 
-    public void checkIsTheNumbersFromRange(int xO) {
-        if (xO < 0 || xO > 3) {
+    public boolean checkIsTheNumbersFromRange(String xO) {
+        int xOTemp = Integer.parseInt(xO);
+        if (xOTemp < 0 || xOTemp > 3) {
             System.out.println("Coordinates should be from 1 to 3!");
-            move();
+            return false;
         }
+        return true;
     }
 
 }
