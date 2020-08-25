@@ -1,3 +1,7 @@
+package tictactoe;
+
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.Scanner;
 
 public class Game {
@@ -11,11 +15,12 @@ public class Game {
     String levelOfGame = "";
 
     private int xPositionPlayer = 0;
-
     private int oPositionPlayer = 0;
+    private String positionsPlayerString = "";
 
     private int xPositionComputer = 0;
     private int oPositionComputer = 0;
+    private String positionsComputerString = "";
 
     String stringWithCoordinates = "";
     boolean isTrue = false;
@@ -45,9 +50,9 @@ public class Game {
         System.out.println("1.\"Start Game\"");
         System.out.println("2.\"Exit\"");
         startGameValue = scanner.nextLine();
-        if (startGameValue.equals("start game")) {
+        if (startGameValue.toLowerCase().equals("start game") || startGameValue.equals("1")) {
             continueGame();
-        } else if(startGameValue.equals("exit")){
+        } else if (startGameValue.toLowerCase().equals("exit") || startGameValue.equals("2")) {
             System.exit(0);
         } else {
             System.out.println("Bad Parameters!");
@@ -63,14 +68,16 @@ public class Game {
         table.printTable();
 
         printWhoWin();
-        if (!table.isBlankSpaces(table.table)){
+        if (!table.isBlankSpaces(table.table)) {
             gameMenu();
-        };
+        }
+        ;
     }
 
 
     public void playerOneMove() {
-        changeStringWithCoordinateOnPositionValues(playerOne.move());
+        positionsPlayerString = playerOne.move();
+        changeStringWithCoordinateOnPositionValues(positionsPlayerString);
         isTrue = table.setValueInTable(xPositionPlayer, oPositionPlayer, "X");
         if (!isTrue) {
             resetPositionValue();
@@ -84,7 +91,8 @@ public class Game {
 
 
     public void computerMove() {
-        changeStringWithCoordinateOnPositionValues(playerComputer.move());
+        positionsComputerString = playerComputer.move();
+        changeStringWithCoordinateOnPositionValues(positionsComputerString);
         isTrue = table.setValueInTable(xPositionComputer, oPositionComputer, "O");
         System.out.println(xPositionComputer + " " + oPositionComputer);
         if (!isTrue) {
